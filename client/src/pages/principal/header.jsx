@@ -5,7 +5,7 @@ export default function Header({ principalName }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md px-6 py-3 flex justify-between items-center">
+    <header className="w-full bg-blue-400 text-white shadow-md px-6 py-12 flex justify-between items-center">
       
       {/* Logo / Title */}
       <h1 className="text-xl font-semibold tracking-wide">

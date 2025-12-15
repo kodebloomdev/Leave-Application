@@ -345,6 +345,16 @@ function Students() {
                       setForm({ ...form, guardians: arr });
                     }}
                   />
+                   <input
+                    className="border p-2 rounded"
+                    placeholder="Aadhar"
+                    value={g.aadhar}
+                    onChange={(e) => {
+                      const arr = [...form.guardians];
+                      arr[idx].aadhar= e.target.value;
+                      setForm({ ...form, guardians: arr });
+                    }}
+                  />
                   <input
                     className="border p-2 rounded"
                     placeholder="Relation"

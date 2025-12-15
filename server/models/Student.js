@@ -4,6 +4,7 @@ const guardianSchema = new mongoose.Schema({
   name: { type: String, required: true },
   relation: { type: String, required: true },   // Father / Mother / Uncle etc.
   contact: { type: String, required: true },
+  aadhar: {type: String, default: "" },
   photo: { type: String, default: "" }          // Upload photo / capture photo
 });
 

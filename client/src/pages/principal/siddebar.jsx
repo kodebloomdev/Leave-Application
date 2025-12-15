@@ -10,6 +10,11 @@ import {
   LogOut
 } from "lucide-react";
 
+import schoolLogo from "../../assets/nosa-rs-logo.png";
+
+
+
+
 export default function Sidebar() {
   const menu = [
     { name: "Dashboard", path: "/principal", icon: <LayoutGrid size={20} /> },
@@ -24,10 +29,17 @@ export default function Sidebar() {
   return (
     <aside className="w-64 bg-white shadow-md h-screen fixed left-0 top-0 flex flex-col border-r">
       
-      {/* Logo / Title */}
-      <div className="bg-purple-600 text-white font-semibold text-xl p-4 text-center">
-        Principal Panel
-      </div>
+     {/* 🔷 LOGO + SCHOOL NAME */}
+           <div className="bg-blue-400 text-white p-3.5 flex flex-col items-center justify-center border-b">
+             <img
+               src={schoolLogo}
+               alt="NLVRGSRV School Logo"
+               className="w-16 h-16 object-contain mb-2"
+             />
+             <h1 className="text-sm font-semibold text-center leading-tight">
+               NLVRGSRV <br /> Residential School
+             </h1>
+           </div>
 
       {/* Menu Items */}
       <nav className="flex-1 p-3 space-y-2">
@@ -38,7 +50,7 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 p-2 rounded-md cursor-pointer transition ${
                 isActive
-                  ? "bg-purple-600 text-white shadow-sm"
+                  ? "bg-blue-400 text-white shadow-sm"
                   : "text-gray-700 hover:bg-purple-100"
               }`
             }

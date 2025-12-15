@@ -27,7 +27,7 @@ export default function PrincipalDashboard() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
-            Welcome back, <span className="text-purple-600">Dr. Sarah Thompson</span>
+            Welcome back, <span className="text-blue-400">Dr. Sarah Thompson</span>
           </h2>
           <p className="text-gray-500 text-sm mt-1">
             Principal Dashboard Overview

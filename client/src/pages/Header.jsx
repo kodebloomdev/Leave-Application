@@ -7,11 +7,11 @@ export default function StaffHeader({ staffName }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full bg-purple-600 text-white shadow-md px-6 py-3 flex justify-between items-center">
+    <header className="w-full bg-blue-400 text-white shadow-md px-6 py-12 flex justify-between items-center">
       
       {/* Logo / Title */}
-      <h1 className="text-xl font-semibold tracking-wide">
-        Staff Dashboard
+      <h1 className="text-3xl font-semibold tracking-wide">
+       Welcome to Staff Dashboard
       </h1>
 
       <div className="flex items-center gap-6">

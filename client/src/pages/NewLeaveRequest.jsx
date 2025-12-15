@@ -19,6 +19,8 @@ function NewLeaveRequest() {
 
   const [step, setStep] = useState(1);
   const [leaveId, setLeaveId] = useState("");
+  const [printType, setPrintType] = useState("SCHOOL"); // SCHOOL | PARENT
+
 
   /* ================= STUDENTS ================= */
   const [students, setStudents] = useState([]);
@@ -41,6 +43,15 @@ function NewLeaveRequest() {
   const [gatePass, setGatePass] = useState(null);
   const barcodeRef = useRef(null);
   const printRef = useRef(null);
+
+  /* ================= GUARDIAN DETAILS ================= */
+const [guardianDetails, setGuardianDetails] = useState(null);
+const [otherGuardian, setOtherGuardian] = useState({
+  name: "",
+  phone: "",
+  aadhar: "",
+});
+
 
   /* ================= CAMERA ================= */
   const webcamRef = useRef(null);
@@ -116,18 +127,30 @@ function NewLeaveRequest() {
   /* SEND OTP */
   /* ================================================= */
   const sendOTP = async () => {
-    await axios.post(`${API_URL}/api/leave/send-otp`, {
-      studentId: selectedStudent._id,
-      guardian,
-      departure,
-      returnDate,
-      purpose,
-      notes,
-      guardianPhoto: guardianPhotoUrl,
-      createdBy: user.id,
-    });
-    setStep(3);
-  };
+  const guardianPayload =
+  guardian === "Others"
+    ? {
+        relation: "Others",
+        name: otherGuardian.name,
+        contact: otherGuardian.phone, // ✅ map phone → contact
+        aadhar: otherGuardian.aadhar,
+      }
+    : guardianDetails;
+
+  await axios.post(`${API_URL}/api/leave/send-otp`, {
+    studentId: selectedStudent._id,
+    guardian: guardianPayload,
+    departure,
+    returnDate,
+    purpose,
+    notes,
+    guardianPhoto: guardianPhotoUrl,
+    createdBy: user.id,
+  });
+
+  setStep(3);
+};
+
 
   /* ================================================= */
   /* VERIFY OTP */
@@ -159,6 +182,7 @@ function NewLeaveRequest() {
   /* ================================================= */
   /* PRINT (SAFE) */
   /* ================================================= */
+
   const handlePrint = useReactToPrint({
   contentRef: printRef,
   documentTitle: "Gate Pass",
@@ -237,15 +261,77 @@ function NewLeaveRequest() {
           </p>
 
           <select
-            className="border p-2 rounded w-full mb-3"
-            value={guardian}
-            onChange={(e) => setGuardian(e.target.value)}
-          >
-            <option value="">Select Guardian</option>
-            <option>Father</option>
-            <option>Mother</option>
-            <option>Uncle</option>
-          </select>
+  className="border p-2 rounded w-full mb-3"
+  value={guardian}
+  onChange={(e) => {
+    const value = e.target.value;
+    setGuardian(value);
+
+    if (value === "Others") {
+      setGuardianDetails(null);
+    } else {
+      const found = selectedStudent?.guardians?.find(
+        (g) => g.relation === value
+      );
+      setGuardianDetails(found || null);
+    }
+  }}
+>
+  <option value="">Select Guardian</option>
+  <option>Father</option>
+  <option>Mother</option>
+  <option>GrandFather</option>
+  <option>GrandMother</option>
+  <option>Uncle</option>
+  <option>Others</option>
+</select>
+
+{/* AUTO GUARDIAN DETAILS */}
+{guardianDetails && (
+  <div className="bg-gray-50 border rounded p-4 mb-4 text-sm">
+    <p><strong>Name:</strong> {guardianDetails.name}</p>
+   <p><strong>Contact:</strong> {guardianDetails?.contact}</p>
+<p><strong>Aadhar:</strong> {guardianDetails?.aadhar}</p>
+
+  </div>
+)}
+{/* OTHER GUARDIAN FORM */}
+{guardian === "Others" && (
+  <div className="bg-gray-50 border rounded p-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+
+    <input
+      type="text"
+      placeholder="Guardian Name"
+      className="border p-2 rounded"
+      value={otherGuardian.name}
+      onChange={(e) =>
+        setOtherGuardian({ ...otherGuardian, name: e.target.value })
+      }
+    />
+
+    <input
+      type="text"
+      placeholder="Phone Number"
+      className="border p-2 rounded"
+      value={otherGuardian.phone}
+      onChange={(e) =>
+        setOtherGuardian({ ...otherGuardian, phone: e.target.value })
+      }
+    />
+
+    <input
+      type="text"
+      placeholder="Aadhar Number"
+      className="border p-2 rounded md:col-span-2"
+      value={otherGuardian.aadhar}
+      onChange={(e) =>
+        setOtherGuardian({ ...otherGuardian, aadhar: e.target.value })
+      }
+    />
+
+  </div>
+)}
+
 
           <select
             className="border p-2 rounded w-full mb-3"
@@ -319,12 +405,12 @@ function NewLeaveRequest() {
 
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
-              type="datetime-local"
+              type="date"
               className="border p-2 rounded"
               onChange={(e) => setDeparture(e.target.value)}
             />
             <input
-              type="datetime-local"
+              type="date"
               className="border p-2 rounded"
               onChange={(e) => setReturnDate(e.target.value)}
             />
@@ -383,45 +469,112 @@ function NewLeaveRequest() {
       )}
 
       {/* ================= STEP 4 ================= */}
-      {/* ================= STEP 4 ================= */}
 {step === 4 && (
   <div className="bg-white p-6 rounded-xl shadow text-center">
 
-    {/* ✅ PRINTABLE CONTENT ONLY */}
-    <div ref={printRef} className="p-4">
-  <h2 className="text-green-600 text-xl font-semibold mb-3">
-    Gate Pass Approved
-  </h2>
+    {/* ================= PRINT AREA ================= */}
+    <div ref={printRef} className="p-6 border rounded-lg max-w-lg mx-auto">
 
-  <div className="flex justify-center my-4">
-    <svg ref={barcodeRef}></svg>
-  </div>
+      <h2 className="text-lg font-bold mb-1">RESIDENTIAL SCHOOL</h2>
+      <p className="text-xs text-gray-600 mb-2">
+        OFFICIAL GATE PASS ({printType} COPY)
+      </p>
 
-  <p><strong>Pass ID:</strong> {gatePass?.passId}</p>
-  <p><strong>Student:</strong> {selectedStudent?.name}</p>
-  <p><strong>Guardian:</strong> {guardian}</p>
-</div>
+      <hr className="my-3" />
+
+      {/* BARCODE */}
+      <div className="flex justify-center my-3">
+        <svg ref={barcodeRef}></svg>
+      </div>
+
+      {/* DETAILS */}
+      <div className="text-left text-sm space-y-1">
+
+        <p><strong>Pass ID:</strong> {gatePass?.passId}</p>
+        <p><strong>Student:</strong> {selectedStudent?.name}</p>
+        <p><strong>Class:</strong> {selectedStudent?.class} - {selectedStudent?.section}</p>
+
+        <p>
+          <strong>Guardian:</strong>{" "}
+          {guardian === "Others"
+            ? otherGuardian.name
+            : guardianDetails?.name}
+        </p>
+
+        <p>
+          <strong>Contact:</strong>{" "}
+          {guardian === "Others"
+            ? otherGuardian.phone
+            : guardianDetails?.contact}
+        </p>
+
+        {/* ✅ AADHAR NUMBER */}
+  <p>
+    <strong>Aadhar Number:</strong>{" "}
+    {guardian === "Others"
+      ? otherGuardian.aadhar
+      : guardianDetails?.aadhar}
+  </p>
 
 
-    {/* ❌ NOT PRINTED */}
+        <p><strong>Purpose:</strong> {purpose}</p>
+
+        <p><strong>Departure:</strong> {departure}</p>
+        <p><strong>Return:</strong> {returnDate}</p>
+
+        <p className="text-xs text-gray-500 mt-2">
+          Issued by: {user?.name} | Time: {new Date().toLocaleTimeString()}
+        </p>
+      </div>
+
+      {/* GUARDIAN PHOTO */}
+      {guardianPhotoUrl && (
+        <div className="flex justify-center mt-4">
+          <img
+            src={`${API_URL}${guardianPhotoUrl}`}
+            alt="Guardian"
+            className="w-24 h-24 object-cover border rounded"
+          />
+        </div>
+      )}
+    </div>
+
+    {/* ================= PRINT BUTTONS ================= */}
+    <div className="flex justify-center gap-4 mt-6">
+
+      {/* SCHOOL COPY */}
+      <button
+        onClick={() => {
+          setPrintType("SCHOOL");
+          setTimeout(handlePrint, 100);
+        }}
+        className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2"
+      >
+        🏫 Print School Copy
+      </button>
+
+      {/* PARENT COPY */}
+      <button
+        onClick={() => {
+          setPrintType("PARENT");
+          setTimeout(handlePrint, 100);
+        }}
+        className="bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"
+      >
+        👨‍👩‍👧 Print Parent Copy
+      </button>
+
+    </div>
+
+    {/* RETURN */}
     <button
-      disabled={!gatePass}
-      onClick={() => {
-        if (!printRef.current) {
-          alert("Nothing to print");
-          return;
-        }
-        handlePrint();
-      }}
-      className={`px-4 py-2 rounded mt-6 ${
-        gatePass ? "bg-green-600 text-white" : "bg-gray-400"
-      }`}
+      onClick={() => window.location.href = "/dashboard"}
+      className="mt-4 text-sm text-blue-600 underline"
     >
-      Print Gate Pass
+      Return to Dashboard
     </button>
   </div>
 )}
-      
     </div>
   );
 }
