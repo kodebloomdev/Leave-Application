@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const leaveSchema = new mongoose.Schema({
   student: { type: mongoose.Schema.Types.ObjectId, ref: "Student" },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
   guardianName: String,
   guardianRelation: String,

@@ -30,7 +30,7 @@ export default function LeaveManagement() {
   }, [selected]);
 
   const approve = async (row) => {
-    await axios.patch(`http://localhost:5000/api/leave/${row.id}/approve`, { justification, decidedBy: "Principal" });
+    await axios.patch(`http://localhost:5000/api/leave/${row._id}/approve`, { justification, decidedBy: "Principal" });
     setJustification("");
     await load();
     const updated = items.find((i) => i.id === row.id);
@@ -38,7 +38,7 @@ export default function LeaveManagement() {
   };
 
   const reject = async (row) => {
-    await axios.patch(`http://localhost:5000/api/leave/${row.id}/reject`, { justification, decidedBy: "Principal" });
+    await axios.patch(`http://localhost:5000/api/leave/${row._id}/reject`, { justification, decidedBy: "Principal" });
     setJustification("");
     await load();
     const updated = items.find((i) => i.id === row.id);
@@ -64,6 +64,8 @@ export default function LeaveManagement() {
       return okStatus && okClass && okSec && okSearch;
     });
   }, [items, filters]);
+
+  console.log({ filteredItems });
 
   return (
     <div className="w-full">
@@ -131,7 +133,7 @@ export default function LeaveManagement() {
             </thead>
             <tbody>
               {filteredItems.map((row) => (
-                <tr key={row.id} className="border-b">
+                <tr key={row._id} className="border-b">
                   <td className="p-3">
                     <button onClick={()=>setSelected(row)} className="text-blue-600">{row.student?.name}</button>
                   </td>

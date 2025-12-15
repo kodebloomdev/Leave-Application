@@ -14,7 +14,7 @@ import PDFDocument from "pdfkit";
 // ---------------------------
 export const sendOTP = async (req, res) => {
   try {
-    const { studentId, guardian, departure, returnDate } = req.body;
+    const { studentId, guardian, departure, returnDate,createdBy,purpose } = req.body;
 
     const student = await Student.findById(studentId);
     if (!student) return res.status(404).json({ message: "Student not found" });
@@ -23,9 +23,11 @@ export const sendOTP = async (req, res) => {
 
     const leave = await LeaveRequest.create({
       student: studentId,
+      createdBy: createdBy,
       guardianName: guardian,
       departureDate: departure,
       returnDate: returnDate,
+      purpose:purpose,
       otp,
       otpExpiresAt: Date.now() + 15 * 60 * 1000, // 15 minutes
     });

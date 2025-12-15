@@ -6,6 +6,8 @@ export default function LeaveHistory() {
   const [leaves, setLeaves] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
 
+  console.log({ user });
+
   useEffect(() => {
     fetchHistory();
   }, []);
@@ -13,7 +15,7 @@ export default function LeaveHistory() {
   const fetchHistory = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/staff/leaves/${user._id}`
+        `http://localhost:5000/api/staff/leaves/${user.id}`
       );
       setLeaves(res.data);
     } catch (err) {

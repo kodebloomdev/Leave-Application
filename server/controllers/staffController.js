@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import Student from "../models/Student.js";
+import LeaveRequest from "../models/LeaveRequest.js";
 
 export const createStaff = async (req, res) => {
   try {
@@ -75,7 +76,7 @@ export const getStaffLeaves = async (req, res) => {
   try {
     const { staffId } = req.params;
 
-    const leaves = await Leave.find({ createdBy: staffId })
+    const leaves = await LeaveRequest.find({ createdBy: staffId })
       .populate("student", "name")
       .sort({ createdAt: -1 });
 
