@@ -160,9 +160,10 @@ function NewLeaveRequest() {
   /* PRINT (SAFE) */
   /* ================================================= */
   const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    documentTitle: "GatePass",
-  });
+  contentRef: printRef,
+  documentTitle: "Gate Pass",
+});
+
 
   /* ================================================= */
   /* UI */
@@ -382,34 +383,45 @@ function NewLeaveRequest() {
       )}
 
       {/* ================= STEP 4 ================= */}
-      {step === 4 && (
-        <div
-          ref={printRef}
-          className="bg-white p-6 rounded-xl shadow text-center"
-        >
-          <h2 className="text-green-600 text-xl font-semibold mb-3">
-            Gate Pass Approved
-          </h2>
+      {/* ================= STEP 4 ================= */}
+{step === 4 && (
+  <div className="bg-white p-6 rounded-xl shadow text-center">
 
-          <div className="flex justify-center my-4">
-            <svg ref={barcodeRef}></svg>
-          </div>
+    {/* ✅ PRINTABLE CONTENT ONLY */}
+    <div ref={printRef} className="p-4">
+  <h2 className="text-green-600 text-xl font-semibold mb-3">
+    Gate Pass Approved
+  </h2>
 
-          <p><strong>Pass ID:</strong> {gatePass?.passId}</p>
-          <p><strong>Student:</strong> {selectedStudent.name}</p>
-          <p><strong>Guardian:</strong> {guardian}</p>
+  <div className="flex justify-center my-4">
+    <svg ref={barcodeRef}></svg>
+  </div>
 
-          <button
-            disabled={!gatePass}
-            onClick={handlePrint}
-            className={`px-4 py-2 rounded mt-4 ${
-              gatePass ? "bg-green-600 text-white" : "bg-gray-400"
-            }`}
-          >
-            Print Gate Pass
-          </button>
-        </div>
-      )}
+  <p><strong>Pass ID:</strong> {gatePass?.passId}</p>
+  <p><strong>Student:</strong> {selectedStudent?.name}</p>
+  <p><strong>Guardian:</strong> {guardian}</p>
+</div>
+
+
+    {/* ❌ NOT PRINTED */}
+    <button
+      disabled={!gatePass}
+      onClick={() => {
+        if (!printRef.current) {
+          alert("Nothing to print");
+          return;
+        }
+        handlePrint();
+      }}
+      className={`px-4 py-2 rounded mt-6 ${
+        gatePass ? "bg-green-600 text-white" : "bg-gray-400"
+      }`}
+    >
+      Print Gate Pass
+    </button>
+  </div>
+)}
+      
     </div>
   );
 }
