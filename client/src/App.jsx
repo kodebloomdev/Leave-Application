@@ -4,6 +4,9 @@ import Dashboard from "./pages/Dashboard";
 import LeaveHistory from "./pages/LeaveHistory";
 import NewLeaveRequest from "./pages/NewLeaveRequest";
 import Students from "./pages/Students";
+import StudentAttendance from "./pages/StudentAttendance";
+import StudentTimetable from "./pages/StudentTimetable";
+import StaffProfile from "./pages/StaffProfile";
 
 // Principal pages
 import PrincipalLayout from "./pages/principal/principal";
@@ -30,6 +33,11 @@ function App() {
         </Route>
         <Route path="/leave-request" element={<NewLeaveRequest />} />
         <Route path="/leave-history" element={<LeaveHistory />} />
+        <Route path="/attendance" element={<StudentAttendance />} />
+        <Route path="/student-timetable" element={<StudentTimetable/>} />
+        <Route path="/staff-profile" element={<StaffProfile/>} />
+
+
 
         <Route path="/students" element={<Students />} />
 

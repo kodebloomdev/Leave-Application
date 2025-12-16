@@ -49,7 +49,7 @@ export default function StaffDashboard() {
       <div className="flex-1 ml-64 flex flex-col">
 
         {/* Header */}
-        <Header principalName={user?.name} />
+        <Header staffName={user?.name} />
 
         {/* Page content */}
         <div className="p-6">

@@ -12,6 +12,9 @@ import Webcam from "react-webcam";
 import JsBarcode from "jsbarcode";
 import { useReactToPrint } from "react-to-print";
 
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+
 const API_URL = "http://localhost:5000";
 
 function NewLeaveRequest() {
@@ -193,6 +196,14 @@ const [otherGuardian, setOtherGuardian] = useState({
   /* UI */
   /* ================================================= */
   return (
+     <div className="flex min-h-screen bg-gray-100">
+              {/* Sidebar */}
+              <Sidebar />
+        
+              {/* Main Content */}
+              <div className="flex-1 ml-64">
+                <Header />
+
     <div className="p-6">
       <h1 className="text-xl font-semibold mb-6">New Leave Request</h1>
 
@@ -252,6 +263,7 @@ const [otherGuardian, setOtherGuardian] = useState({
           </button>
         </div>
       )}
+      
 
       {/* ================= STEP 2 ================= */}
       {step === 2 && (
@@ -285,6 +297,7 @@ const [otherGuardian, setOtherGuardian] = useState({
   <option>Uncle</option>
   <option>Others</option>
 </select>
+
 
 {/* AUTO GUARDIAN DETAILS */}
 {guardianDetails && (
@@ -575,6 +588,8 @@ const [otherGuardian, setOtherGuardian] = useState({
     </button>
   </div>
 )}
+    </div>
+    </div>
     </div>
   );
 }

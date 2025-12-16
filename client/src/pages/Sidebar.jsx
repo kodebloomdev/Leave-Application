@@ -17,11 +17,11 @@ export default function StaffSidebar() {
   const menu = [
     { name: "Dashboard", path: "/dashboard", icon: <LayoutGrid size={20} /> },
     { name: "Students", path: "/students", icon: <Users size={20} /> },
-    { name: "Attendance", path: "/attendance", icon: <CalendarCheck size={20} /> },
-    { name: "Time Table", path: "/timetable", icon: <Calendar size={20} /> },
-    { name: "Leave Requests", path: "/leave-request", icon: <FileCheck size={20} /> },
+    { name: "StudentAttendance", path: "/attendance", icon: <CalendarCheck size={20} /> },
+    { name: "Student Timetable", path: "/student-timetable", icon: <Calendar size={20} /> },
+    { name: "Student Leave Requests", path: "/leave-request", icon: <FileCheck size={20} /> },
     { name: "Leave History", path: "/leave-history", icon: <History size={20} /> },
-    { name: "Profile", path: "/profile", icon: <User size={20} /> },
+    { name: "StaffProfile", path: "/staff-profile", icon: <User size={20} /> },
   ];
 
   return (

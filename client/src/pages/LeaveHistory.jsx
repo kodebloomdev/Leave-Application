@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+
+import Header from "./Header";
 import Sidebar from "./Sidebar";
 
 export default function LeaveHistory() {
@@ -24,11 +27,27 @@ export default function LeaveHistory() {
   };
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
-      <Sidebar />
-
-      <div className="flex-1 ml-64 p-6">
-        <h1 className="text-2xl font-semibold mb-6">Leave History</h1>
+    <div className="flex min-h-screen bg-gray-100">
+          {/* Sidebar */}
+          <Sidebar />
+    
+          {/* Main Content */}
+          <div className="flex-1 ml-64">
+            <Header />
+    
+            <div className="p-6">
+              {/* Purple Banner */}
+              <div className="bg-blue-400 text-white p-6 rounded-xl mb-6 flex justify-between items-center">
+                <div>
+                  <p className="text-sm opacity-90">Attendance Overview</p>
+                  <h2 className="text-2xl font-semibold">
+                    Monitor daily attendance across classes
+                  </h2>
+                  
+                </div>
+                </div>
+                </div>
+    
 
         <div className="bg-white rounded-xl shadow overflow-x-auto">
           <table className="w-full text-sm">
